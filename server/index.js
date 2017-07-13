@@ -3,10 +3,13 @@ const app = express()
 const db  = require('./db')
 const router = express.Router()
 const path = require('path')
+const bugs = require('./controllers/bugsController')
 
-router.get('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+app.use('/', (req, res, next) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
 })
+
+app.use('/bugs', bugs.getBugs)
 
 const port = 4000
 
