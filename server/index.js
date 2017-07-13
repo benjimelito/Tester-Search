@@ -4,10 +4,12 @@ const router = express.Router()
 const path = require('path')
 const index = require('./routes/index')
 const bugs = require('./routes/bugs')
+const testers = require('./routes/testers')
 
 
 app.use('/', index)
 app.use(bugs)
+app.use(testers)
 
 // 404 Catcher
 app.use((req, res, next) => {
