@@ -44,7 +44,7 @@ exports.findTesters = (req, res, next) => {
           // If we just have one country  
           } else {
             let filteredTesters = testers.filter((tester) => {
-              return tester.country = req.query.country
+              return tester.country === req.query.country
             })
             res.send(filteredTesters)
           }
