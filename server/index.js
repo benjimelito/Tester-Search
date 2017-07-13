@@ -1,15 +1,19 @@
 const express = require('express')
 const app = express()
-const db  = require('./db')
 const router = express.Router()
 const path = require('path')
-const bugs = require('./controllers/bugsController')
+const index = require('./routes/index')
+const bugs = require('./routes/bugs')
 
-app.use('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
+
+app.use('/', index)
+app.use(bugs)
+
+// 404 Catcher
+app.use((req, res, next) => {
+  let err = new Error(`404: ${req.originalUrl} Not Found`);
+  err.status = 404;
 })
-
-app.use('/bugs', bugs.getBugs)
 
 const port = 4000
 
