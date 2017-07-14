@@ -1,13 +1,44 @@
 const Tester = require('../models/tester')
 const Device = require('../models/device')
+const Bug = require('../models/bug')
 
 exports.findTesters = (req, res, next) => {
   
+  const sortTesters = function(testers){
+    // Turn our array of all tester data into
+    // an array of just IDs
+    const testerIdArray = testers.map(tester => tester.testerId)
+
+    Bug.selectByTester(testerIdArray)
+    .then((bugsArray) => {
+      // Create an object to associate tester Ids
+      // with number of bugs
+      const bugsPerTester = {}
+
+      bugsArray.forEach((bug) => {
+        bugsPerTester[bug.testerId]? bugsPerTester[bug.testerId] ++ : bugsPerTester[bug.testerId] = 1
+      })
+
+      // Create an array that holds each tester object, with
+      // an additional property of 'bugs'. Then sort this array
+      // by # of bugs
+      const testersWithBugs = testers.map((tester) =>{
+        tester.bugs = bugsPerTester[tester.testerId]
+        return tester
+      }).sort((a,b) => {
+        return b.bugs - a.bugs
+      })
+      // Send em
+      return res.send(testersWithBugs)
+    })
+
+  }
+
   // If neither country nor device is specified
   if(!req.query.country && !req.query.device) {
     Tester.getAllTesters()
     .then((testers) => {
-      res.send(testers)
+      sortTesters(testers)
     })
   }
 
@@ -15,7 +46,7 @@ exports.findTesters = (req, res, next) => {
   if(!req.query.device && req.query.country) {
     Tester.getTestersByCountry(req.query.country)
     .then((testers) => {
-      res.send(testers)
+      sortTesters(testers)
     })
   } else {
 
@@ -24,9 +55,8 @@ exports.findTesters = (req, res, next) => {
     Device.selectByDevice(req.query.device)
     .then((tester_devices) => {
       
-      const testerIds = tester_devices.map((tester_device) => {
-        return tester_device.testerId
-      })
+      // Create an array of tester Ids that match the given device(s)
+      const testerIds = tester_devices.map(tester_device => tester_device.testerId)
 
       Tester.getTestersById(testerIds)
       .then((testers) => {
@@ -39,19 +69,19 @@ exports.findTesters = (req, res, next) => {
             let filteredTesters = testers.filter((tester) => {
               return req.query.country.indexOf(tester.country) !== -1
             })
-            res.send(filteredTesters)
+            sortTesters(filteredTesters)
 
           // If we just have one country  
           } else {
             let filteredTesters = testers.filter((tester) => {
               return tester.country === req.query.country
             })
-            res.send(filteredTesters)
+            sortTesters(filteredTesters)
           }
         
         // If country is not specified
         } else {
-          res.send(testers)
+          sortTesters(testers)
         }
       })
     })

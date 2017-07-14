@@ -5,6 +5,6 @@ const knex = require('knex')({
   }
 })
 
-exports.getAllBugs = () => {
-  return knex('bugs')
+exports.selectByTester = (testerIdArray) => {
+  return knex.select('*').from('bugs').whereIn('testerId', testerIdArray)
 }
