@@ -29,6 +29,7 @@ exports.findTesters = (req, res, next) => {
         return b.bugs - a.bugs
       })
       // Send em
+      console.log(testersWithBugs)
       return res.send(testersWithBugs)
     })
 
