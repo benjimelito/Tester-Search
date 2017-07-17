@@ -6,6 +6,7 @@ const index = require('./routes/index')
 const bugs = require('./routes/bugs')
 const testers = require('./routes/testers')
 
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', index)
 app.use(bugs)
