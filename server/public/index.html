@@ -4,13 +4,15 @@
     <title>Tester Search</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src='./events.js'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href='styles.css'>
   </head>
   <body>
     <form>
       <h3>Country</h3>
       <input type="checkbox" value="US"> US <br>
       <input type="checkbox" value="JP"> JP <br>
-      <input type="checkbox" value="GB"> JP <br>
+      <input type="checkbox" value="GB"> GB <br>
       <h3>Device</h3>
       <input type="checkbox" value="iPhone 4"> iPhone 4 <br>
       <input type="checkbox" value="iPhone 4 S"> iPhone 4 S<br>
@@ -24,5 +26,12 @@
       <input type="checkbox" value="iPhone 3"> iPhone 3 <br>
       <input type="submit" value="Submit">
     </form>
+      <div class='row'>
+        <div class='col-md-3'><strong>Tester Name</strong></div>
+        <div class='col-md-3'><strong>Country</strong></div>
+        <div class='col-md-3'><strong>Last Login</strong></div>
+        <div class='col-md-3'><strong>Bugs</strong></div>
+      </div>
+      <ul class='testers'></ul>
   </body>
 <html>

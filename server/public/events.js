@@ -27,6 +27,16 @@ $( document ).ready(function() {
           obj.country.push($(this).val())
         }
      })
-     console.log(decodeURIComponent($.param(obj)))
+     
+     const params = decodeURIComponent($.param(obj))
+    $.get( "http://localhost:4000/testers?" + params, function( data ) {
+      return(data)
+    })
+    .then(function(testers){
+      $('.testers').empty()
+      testers.forEach(function(tester){
+        $('.testers').append("<div class='row'><div class='col-md-3'>" + tester.firstName + " " + tester.lastName + "</div><div class='col-md-3'>" + tester.country + "</div><div class='col-md-3'>" + tester.lastLogin + "</div><div class='col-md-3'>" + tester.bugs + "</div></div>")
+      })
+    })
   })
 })
