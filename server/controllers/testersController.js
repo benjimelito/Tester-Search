@@ -9,13 +9,18 @@ exports.findTesters = (req, res, next) => {
     // an array of just IDs
     const testerIdArray = testers.map(tester => tester.testerId)
 
-    Bug.selectByTester(testerIdArray)
+    Bug.selectByTesters(testerIdArray)
     .then((bugsArray) => {
       // Create an object to associate tester Ids
       // with number of bugs
       const bugsPerTester = {}
 
-      bugsArray.forEach((bug) => {
+      // Filter the bugsArray to only match devices that were specified
+      const filteredBugsArray = bugsArray.filter(bug =>
+        req.query.device.map(Number).indexOf(bug.deviceId) !== -1)
+
+      // Fill up the bugsPerTester object with a count of how many bugs each tester has
+      filteredBugsArray.forEach((bug) => {
         bugsPerTester[bug.testerId]? bugsPerTester[bug.testerId] ++ : bugsPerTester[bug.testerId] = 1
       })
 
@@ -55,7 +60,6 @@ exports.findTesters = (req, res, next) => {
   // are specified
     Device.selectByDevice(req.query.device)
     .then((tester_devices) => {
-      
       // Create an array of tester Ids that match the given device(s)
       const testerIds = tester_devices.map(tester_device => tester_device.testerId)
 
@@ -76,6 +80,7 @@ exports.findTesters = (req, res, next) => {
           } else {
             let filteredTesters = testers.filter((tester) => {
               return tester.country === req.query.country
+              //&& 
             })
             sortTesters(filteredTesters)
           }
