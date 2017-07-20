@@ -12,5 +12,5 @@ The goal of this application is to match testers based on user search criteria. 
 * After forking and cloning the repo, you should run `npm install` to
 install all dependencies.
 * Next, you should make sure that you have psql running on your machine and run the `create_db` script in the `scripts` folder.
-* Finally, you should runn the `upload_all` script in the `scripts` folder in order to seed the database.
+* Finally, you should run the `upload_all` script in the `scripts` folder in order to seed the database.
 * After all these steps have been completed, simply run `npm start` in order to view the app on `localhost:4000`
