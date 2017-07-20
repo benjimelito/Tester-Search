@@ -16,11 +16,14 @@ exports.findTesters = (req, res, next) => {
       const bugsPerTester = {}
 
       // Filter the bugsArray to only match devices that were specified
-      const filteredBugsArray = bugsArray.filter(bug =>
+      if (req.query.device) {
+        // Gotta use var here, no block scoping allowed!
+        var filteredBugsArray = bugsArray.filter(bug =>
         req.query.device.map(Number).indexOf(bug.deviceId) !== -1)
+      }
 
       // Fill up the bugsPerTester object with a count of how many bugs each tester has
-      filteredBugsArray.forEach((bug) => {
+      (filteredBugsArray || bugsArray).forEach((bug) => {
         bugsPerTester[bug.testerId]? bugsPerTester[bug.testerId] ++ : bugsPerTester[bug.testerId] = 1
       })
 
